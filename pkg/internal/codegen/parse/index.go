@@ -40,6 +40,11 @@ func (b *APIs) parseIndex() {
 	b.SubByGroupVersionKind = map[string]map[string]map[string]*types.Type{}
 
 	for _, c := range b.context.Order {
+		apiPkg := strings.HasPrefix(c.Name.Package, b.APIsPkg)
+		if !apiPkg {
+			continue
+		}
+
 		// The type is a subresource, add it to the subresource index
 		if IsAPISubresource(c) {
 			group := GetGroup(c)
